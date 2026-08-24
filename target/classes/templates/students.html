@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <span>📚</span> Library Management System
+        </a>
+        <div class="navbar-links">
+            <a th:href="@{/librarian/home}">Dashboard</a>
+            <a th:href="@{/librarian/books}">Manage Books</a>
+            <a th:href="@{/librarian/books/add}">Add Book</a>
+            <a th:href="@{/librarian/borrow-records}">Borrow Records</a>
+            <a th:href="@{/librarian/logout}" class="btn-nav">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>🎓 Registered Students</h2>
+        </div>
+
+        <!-- Students Table -->
+        <div th:if="${#lists.size(students) > 0}" class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="student : ${students}">
+                        <td th:text="${student.id}">1</td>
+                        <td th:text="${student.name}">Student Name</td>
+                        <td th:text="${student.email}">student@email.com</td>
+                        <td><span class="badge badge-success" th:text="${student.department}">CSE</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.size(students) == 0}" class="empty-state">
+            <div class="icon">🎓</div>
+            <h3>No students registered yet</h3>
+            <p>Students will appear here once they register.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <span>📚</span> Library Management System
+        </a>
+        <div class="navbar-links">
+            <a th:href="@{/books}">View Books</a>
+            <a th:href="@{/student/login}">Student Login</a>
+            <a th:href="@{/librarian/login}">Librarian Login</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>📚 Library Management System</h1>
+        <p>Simple and Efficient Library Management for Students and Librarians</p>
+        <div class="hero-buttons">
+            <a th:href="@{/register}" class="btn btn-white btn-lg">Student Registration</a>
+            <a th:href="@{/student/login}" class="btn btn-outline-white btn-lg">Student Login</a>
+            <a th:href="@{/librarian/login}" class="btn btn-outline-white btn-lg">Librarian Login</a>
+            <a th:href="@{/books}" class="btn btn-outline-white btn-lg">View Books</a>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="container">
+        <h2 class="text-center mb-3 text-lg">Key Features</h2>
+        <div class="features-grid">
+            <a th:href="@{/books}" class="feature-card">
+                <div class="icon">📖</div>
+                <h3>Browse Books</h3>
+                <p>Search and explore our collection of books across various categories.</p>
+            </a>
+            <a th:href="@{/student/login}" class="feature-card">
+                <div class="icon">🎓</div>
+                <h3>Student Portal</h3>
+                <p>Register, login, borrow and return books with a few simple clicks.</p>
+            </a>
+            <a th:href="@{/librarian/login}" class="feature-card">
+                <div class="icon">📋</div>
+                <h3>Librarian Dashboard</h3>
+                <p>Manage books, view students and track all borrowing records easily.</p>
+            </a>
+            <a th:href="@{/books}" class="feature-card">
+                <div class="icon">🔍</div>
+                <h3>Quick Search</h3>
+                <p>Find books instantly by title, author or category.</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+    </div>
+
+</body>
+</html>

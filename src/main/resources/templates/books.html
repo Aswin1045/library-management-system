@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <span>📚</span> Library Management System
+        </a>
+        <div class="navbar-links">
+            <a th:href="@{/}">Home</a>
+            <a th:if="${isStudentLoggedIn}" th:href="@{/student/home}">My Dashboard</a>
+            <a th:if="${isStudentLoggedIn}" th:href="@{/student/borrowed-books}">Borrowed Books</a>
+            <a th:unless="${isStudentLoggedIn}" th:href="@{/student/login}">Student Login</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>📖 Available Books</h2>
+        </div>
+
+        <!-- Success/Error Alerts -->
+        <div th:if="${success}" class="alert alert-success">
+            <span>✅</span> <span th:text="${success}"></span>
+        </div>
+        <div th:if="${error}" class="alert alert-danger">
+            <span>⚠️</span> <span th:text="${error}"></span>
+        </div>
+
+        <!-- Search Bar -->
+        <form th:action="@{/books}" method="get" class="search-bar">
+            <input type="text" name="search" class="form-control" placeholder="Search by title, author, or category..." th:value="${search}">
+            <button type="submit" class="btn btn-primary">🔍 Search</button>
+            <a th:href="@{/books}" class="btn btn-outline">Clear</a>
+        </form>
+
+        <!-- Books Table -->
+        <div th:if="${#lists.size(books) > 0}" class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Category</th>
+                        <th>ISBN</th>
+                        <th>Available</th>
+                        <th th:if="${isStudentLoggedIn}">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="book : ${books}">
+                        <td th:text="${book.title}">Book Title</td>
+                        <td th:text="${book.author}">Author</td>
+                        <td><span class="badge badge-success" th:text="${book.category}">Category</span></td>
+                        <td th:text="${book.isbn}">ISBN</td>
+                        <td>
+                            <span th:if="${book.availableQuantity > 0}" class="badge badge-success" th:text="${book.availableQuantity + ' / ' + book.quantity}">5</span>
+                            <span th:if="${book.availableQuantity <= 0}" class="badge badge-danger">Not Available</span>
+                        </td>
+                        <td th:if="${isStudentLoggedIn}">
+                            <a th:if="${book.availableQuantity > 0}" th:href="@{/student/borrow/{id}(id=${book.id})}" class="btn btn-primary btn-sm">Borrow</a>
+                            <span th:if="${book.availableQuantity <= 0}" class="text-muted">Unavailable</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.size(books) == 0}" class="empty-state">
+            <div class="icon">📚</div>
+            <h3>No books found</h3>
+            <p>Try a different search term or check back later.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+    </div>
+
+</body>
+</html>

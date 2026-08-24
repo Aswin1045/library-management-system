@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Records - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <span>📚</span> Library Management System
+        </a>
+        <div class="navbar-links">
+            <a th:href="@{/librarian/home}">Dashboard</a>
+            <a th:href="@{/librarian/books}">Manage Books</a>
+            <a th:href="@{/librarian/students}">Students</a>
+            <a th:href="@{/librarian/books/add}">Add Book</a>
+            <a th:href="@{/librarian/logout}" class="btn-nav">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>📋 Borrow Records</h2>
+        </div>
+
+        <!-- Borrow Records Table -->
+        <div th:if="${#lists.size(records) > 0}" class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Borrow Date</th>
+                        <th>Return Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="record : ${records}">
+                        <td th:text="${record.id}">1</td>
+                        <td th:text="${record.student.name}">Student</td>
+                        <td th:text="${record.book.title}">Book</td>
+                        <td th:text="${record.borrowDate}">2025-01-01</td>
+                        <td>
+                            <span th:if="${record.returnDate != null}" th:text="${record.returnDate}">2025-01-15</span>
+                            <span th:if="${record.returnDate == null}" class="text-muted">—</span>
+                        </td>
+                        <td>
+                            <span th:if="${record.status.name() == 'BORROWED'}" class="badge badge-warning">BORROWED</span>
+                            <span th:if="${record.status.name() == 'RETURNED'}" class="badge badge-success">RETURNED</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.size(records) == 0}" class="empty-state">
+            <div class="icon">📋</div>
+            <h3>No borrow records found</h3>
+            <p>Records will appear here when students borrow books.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+    </div>
+
+</body>
+</html>

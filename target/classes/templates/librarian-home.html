@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Dashboard - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <span>📚</span> Library Management System
+        </a>
+        <div class="navbar-links">
+            <a th:href="@{/librarian/books/add}">Add Book</a>
+            <a th:href="@{/librarian/books}">Manage Books</a>
+            <a th:href="@{/librarian/students}">Students</a>
+            <a th:href="@{/librarian/borrow-records}">Borrow Records</a>
+            <a th:href="@{/librarian/logout}" class="btn-nav">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h2>Librarian Dashboard 📋</h2>
+            <p>Welcome, <span th:text="${librarianName}">Admin</span>! Manage the library from here.</p>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard-grid">
+            <a th:href="@{/librarian/books/add}" class="dashboard-card">
+                <div class="icon">➕</div>
+                <h3>Add Book</h3>
+                <p>Add a new book to the library collection</p>
+            </a>
+
+            <a th:href="@{/librarian/books}" class="dashboard-card">
+                <div class="icon">📚</div>
+                <h3>Manage Books</h3>
+                <p>View, edit, or delete books from the library</p>
+            </a>
+
+            <a th:href="@{/librarian/students}" class="dashboard-card">
+                <div class="icon">🎓</div>
+                <h3>View Students</h3>
+                <p>See all registered students</p>
+            </a>
+
+            <a th:href="@{/librarian/borrow-records}" class="dashboard-card">
+                <div class="icon">📋</div>
+                <h3>Borrow Records</h3>
+                <p>Track book borrowing and return records</p>
+            </a>
+
+            <a th:href="@{/librarian/logout}" class="dashboard-card">
+                <div class="icon">🚪</div>
+                <h3>Logout</h3>
+                <p>Sign out of the dashboard</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+    </div>
+
+</body>
+</html>
