@@ -14,7 +14,6 @@ server:
     session:
       cookie:
         same-site: lax
-  port:
   port: 9090
 
 ---
