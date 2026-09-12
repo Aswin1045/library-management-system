@@ -13,6 +13,7 @@ public class Librarian {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @Column(nullable = false)
     private String password;
 

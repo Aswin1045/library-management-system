@@ -10,6 +10,11 @@ spring:
     suffix: .html
 
 server:
+  servlet:
+    session:
+      cookie:
+        same-site: lax
+  port:
   port: 9090
 
 ---
