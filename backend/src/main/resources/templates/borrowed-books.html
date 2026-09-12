@@ -26,33 +26,44 @@
         </div>
 
         <!-- Borrowed Books Table -->
-        <div th:if="${#lists.size(records) > 0}" class="table-container">
+        <div th:if="${#lists.size(records) > 0}" class="table-responsive">
             <table>
                 <thead>
                     <tr>
                         <th>Book</th>
-                        <th>Author</th>
                         <th>Borrow Date</th>
+                        <th>Due Date</th>
                         <th>Return Date</th>
                         <th>Status</th>
+                        <th>Fine</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="record : ${records}">
-                        <td th:text="${record.book.title}">Book Title</td>
-                        <td th:text="${record.book.author}">Author</td>
+                        <td>
+                            <strong th:text="${record.book.title}">Book Title</strong>
+                            <div class="text-muted" style="font-size: 0.8rem;" th:text="${record.book.author}">Author</div>
+                        </td>
                         <td th:text="${record.borrowDate}">2025-01-01</td>
                         <td>
+                            <span th:text="${record.dueDate}">2025-01-15</span>
+                            <span th:if="${record.isOverdue()}" class="badge badge-unavailable" style="margin-left: 5px;">OVERDUE</span>
+                        </td>
+                        <td>
                             <span th:if="${record.returnDate != null}" th:text="${record.returnDate}">2025-01-15</span>
-                            <span th:if="${record.returnDate == null}" class="text-muted">—</span>
+                            <span th:if="${record.returnDate == null}" class="text-muted">-</span>
                         </td>
                         <td>
                             <span th:if="${record.status.name() == 'BORROWED'}" class="badge badge-warning">BORROWED</span>
-                            <span th:if="${record.status.name() == 'RETURNED'}" class="badge badge-success">RETURNED</span>
+                            <span th:if="${record.status.name() == 'RETURNED'}" class="badge badge-available">RETURNED</span>
                         </td>
                         <td>
-                            <a th:if="${record.status.name() == 'BORROWED'}" th:href="@{/student/return/{id}(id=${record.id})}" class="btn btn-success btn-sm">Return Book</a>
+                            <span th:if="${record.getFineAmount() > 0}" class="text-danger" th:text="${'$' + #numbers.formatDecimal(record.getFineAmount(), 1, 2)}">$0.00</span>
+                            <span th:if="${record.getFineAmount() == 0}" class="text-muted">$0.00</span>
+                        </td>
+                        <td>
+                            <a th:if="${record.status.name() == 'BORROWED'}" th:href="@{/student/return/{id}(id=${record.id})}" class="btn btn-outline btn-sm">Return Book</a>
                             <span th:if="${record.status.name() == 'RETURNED'}" class="text-muted">Returned</span>
                         </td>
                     </tr>

@@ -87,15 +87,21 @@ public class LibrarianController {
 
     // View all students
     @GetMapping("/students")
-    public String viewStudents(HttpSession session, Model model) {
-        model.addAttribute("students", studentService.getAllStudents());
+    public String viewStudents(@RequestParam(defaultValue = "0") int page, HttpSession session, Model model) {
+        org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(page, 10);
+        org.springframework.data.domain.Page<com.library.model.Student> studentPage = studentService.getAllStudents(pageable);
+        model.addAttribute("students", studentPage.getContent());
+        model.addAttribute("studentPage", studentPage);
         return "students";
     }
 
     // View all borrow records
     @GetMapping("/borrow-records")
-    public String viewBorrowRecords(HttpSession session, Model model) {
-        model.addAttribute("records", borrowService.getAllBorrowRecords());
+    public String viewBorrowRecords(@RequestParam(defaultValue = "0") int page, HttpSession session, Model model) {
+        org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(page, 10, org.springframework.data.domain.Sort.by("borrowDate").descending());
+        org.springframework.data.domain.Page<com.library.model.BorrowRecord> recordPage = borrowService.getAllBorrowRecords(pageable);
+        model.addAttribute("records", recordPage.getContent());
+        model.addAttribute("recordPage", recordPage);
         return "borrow-records";
     }
 

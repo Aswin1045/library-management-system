@@ -44,6 +44,7 @@ public class BorrowService {
         record.setStudent(student);
         record.setBook(book);
         record.setBorrowDate(LocalDate.now());
+        record.setDueDate(LocalDate.now().plusDays(14));
         record.setStatus(BorrowRecord.BorrowStatus.BORROWED);
         borrowRecordRepository.save(record);
 
@@ -86,7 +87,7 @@ public class BorrowService {
     }
 
     // Get all borrow records
-    public List<BorrowRecord> getAllBorrowRecords() {
-        return borrowRecordRepository.findAll();
+    public org.springframework.data.domain.Page<BorrowRecord> getAllBorrowRecords(org.springframework.data.domain.Pageable pageable) {
+        return borrowRecordRepository.findAll(pageable);
     }
 }

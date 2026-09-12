@@ -17,7 +17,7 @@
         </div>
 
         <!-- Borrow Records Table -->
-        <div th:if="${#lists.size(records) > 0}" class="table-container">
+        <div th:if="${#lists.size(records) > 0}" class="table-responsive">
             <table>
                 <thead>
                     <tr>
@@ -25,8 +25,10 @@
                         <th>Student</th>
                         <th>Book</th>
                         <th>Borrow Date</th>
+                        <th>Due Date</th>
                         <th>Return Date</th>
                         <th>Status</th>
+                        <th>Fine</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,16 +38,33 @@
                         <td th:text="${record.book.title}">Book</td>
                         <td th:text="${record.borrowDate}">2025-01-01</td>
                         <td>
+                            <span th:text="${record.dueDate}">2025-01-15</span>
+                            <span th:if="${record.isOverdue()}" class="badge badge-unavailable" style="margin-left: 5px;">OVERDUE</span>
+                        </td>
+                        <td>
                             <span th:if="${record.returnDate != null}" th:text="${record.returnDate}">2025-01-15</span>
-                            <span th:if="${record.returnDate == null}" class="text-muted">—</span>
+                            <span th:if="${record.returnDate == null}" class="text-muted">-</span>
                         </td>
                         <td>
                             <span th:if="${record.status.name() == 'BORROWED'}" class="badge badge-warning">BORROWED</span>
-                            <span th:if="${record.status.name() == 'RETURNED'}" class="badge badge-success">RETURNED</span>
+                            <span th:if="${record.status.name() == 'RETURNED'}" class="badge badge-available">RETURNED</span>
+                        </td>
+                        <td>
+                            <span th:if="${record.getFineAmount() > 0}" class="text-danger" th:text="${'$' + #numbers.formatDecimal(record.getFineAmount(), 1, 2)}">$0.00</span>
+                            <span th:if="${record.getFineAmount() == 0}" class="text-muted">$0.00</span>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            
+            <!-- Pagination -->
+            <div th:if="${recordPage != null and recordPage.totalPages > 1}" class="pagination mt-4 mb-4" style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                <a th:if="${recordPage.hasPrevious()}" th:href="@{/librarian/borrow-records(page=${recordPage.number - 1})}" class="btn btn-outline btn-sm">Previous</a>
+                
+                <span style="display: flex; align-items: center; padding: 0 1rem;" th:text="${'Page ' + (recordPage.number + 1) + ' of ' + recordPage.totalPages}">Page 1 of 3</span>
+                
+                <a th:if="${recordPage.hasNext()}" th:href="@{/librarian/borrow-records(page=${recordPage.number + 1})}" class="btn btn-outline btn-sm">Next</a>
+            </div>
         </div>
 
         <!-- Empty State -->

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 @Service
 public class BookService {
 
@@ -25,9 +28,9 @@ public class BookService {
         return "success";
     }
 
-    // Get all books
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    // Get all books paginated
+    public Page<Book> getAllBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
     // Get book by ID
@@ -35,12 +38,18 @@ public class BookService {
         return bookRepository.findById(id).orElse(null);
     }
 
-    // Search books by keyword
-    public List<Book> searchBooks(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return getAllBooks();
-        }
-        return bookRepository.searchBooks(keyword.trim());
+    // Search books by keyword, category, and availability
+    public Page<Book> searchBooks(String keyword, String category, boolean availableOnly, Pageable pageable) {
+        return bookRepository.searchBooks(
+            keyword != null ? keyword.trim() : "",
+            category,
+            availableOnly,
+            pageable
+        );
+    }
+
+    public List<String> getAllCategories() {
+        return bookRepository.findAllCategories();
     }
 
     // Update a book

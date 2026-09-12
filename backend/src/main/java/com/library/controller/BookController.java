@@ -9,6 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 @Controller
 public class BookController {
 
@@ -17,13 +21,24 @@ public class BookController {
 
     // View all books (public page)
     @GetMapping("/books")
-    public String viewBooks(@RequestParam(required = false) String search, Model model, HttpSession session) {
-        if (search != null && !search.trim().isEmpty()) {
-            model.addAttribute("books", bookService.searchBooks(search));
-            model.addAttribute("search", search);
-        } else {
-            model.addAttribute("books", bookService.getAllBooks());
-        }
+    public String viewBooks(
+            @RequestParam(required = false) String search, 
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false, defaultValue = "false") boolean availableOnly,
+            @RequestParam(defaultValue = "0") int page,
+            Model model, HttpSession session) {
+            
+        Pageable pageable = PageRequest.of(page, 12); // 12 books per page for grid
+        
+        Page<Book> bookPage = bookService.searchBooks(search, category, availableOnly, pageable);
+        
+        model.addAttribute("books", bookPage.getContent());
+        model.addAttribute("bookPage", bookPage);
+        model.addAttribute("search", search);
+        model.addAttribute("category", category);
+        model.addAttribute("availableOnly", availableOnly);
+        model.addAttribute("categories", bookService.getAllCategories());
+        
         // Check if student is logged in for borrow button
         model.addAttribute("isStudentLoggedIn", session.getAttribute("studentId") != null);
         return "books";
@@ -49,8 +64,11 @@ public class BookController {
 
     // Manage books (librarian)
     @GetMapping("/librarian/books")
-    public String manageBooks(HttpSession session, Model model) {
-        model.addAttribute("books", bookService.getAllBooks());
+    public String manageBooks(@RequestParam(defaultValue = "0") int page, HttpSession session, Model model) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Book> bookPage = bookService.getAllBooks(pageable);
+        model.addAttribute("books", bookPage.getContent());
+        model.addAttribute("bookPage", bookPage);
         return "manage-books";
     }
 

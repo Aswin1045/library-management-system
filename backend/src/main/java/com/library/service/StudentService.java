@@ -39,8 +39,8 @@ public class StudentService {
     }
 
     // Get all students
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public org.springframework.data.domain.Page<Student> getAllStudents(org.springframework.data.domain.Pageable pageable) {
+        return studentRepository.findAll(pageable);
     }
 
     // Get student by ID

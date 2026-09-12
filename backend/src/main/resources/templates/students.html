@@ -36,6 +36,15 @@
                     </tr>
                 </tbody>
             </table>
+            
+            <!-- Pagination -->
+            <div th:if="${studentPage != null and studentPage.totalPages > 1}" class="pagination mt-4 mb-4" style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                <a th:if="${studentPage.hasPrevious()}" th:href="@{/librarian/students(page=${studentPage.number - 1})}" class="btn btn-outline btn-sm">Previous</a>
+                
+                <span style="display: flex; align-items: center; padding: 0 1rem;" th:text="${'Page ' + (studentPage.number + 1) + ' of ' + studentPage.totalPages}">Page 1 of 3</span>
+                
+                <a th:if="${studentPage.hasNext()}" th:href="@{/librarian/students(page=${studentPage.number + 1})}" class="btn btn-outline btn-sm">Next</a>
+            </div>
         </div>
 
         <!-- Empty State -->

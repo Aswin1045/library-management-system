@@ -21,6 +21,7 @@
             <!-- Student links -->
             <th:block th:if="${session.studentId != null}">
                 <a th:href="@{/student/home}" th:classappend="${#httpServletRequest.requestURI == '/student/home'} ? 'active' : ''">My Dashboard</a>
+                <a th:href="@{/student/profile}" th:classappend="${#httpServletRequest.requestURI == '/student/profile'} ? 'active' : ''">My Profile</a>
                 <a th:href="@{/books}" th:classappend="${#httpServletRequest.requestURI == '/books'} ? 'active' : ''">Browse Books</a>
                 <a th:href="@{/student/borrowed-books}" th:classappend="${#httpServletRequest.requestURI == '/student/borrowed-books'} ? 'active' : ''">My Books</a>
                 <a th:href="@{/student/logout}" class="btn-logout">Logout</a>

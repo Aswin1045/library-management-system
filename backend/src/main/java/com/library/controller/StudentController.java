@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.List;
 
 @Controller
 public class StudentController {
@@ -65,6 +66,31 @@ public class StudentController {
     public String studentHome(HttpSession session, Model model) {
         model.addAttribute("studentName", session.getAttribute("studentName"));
         return "student-home";
+    }
+
+    @Autowired
+    private com.library.service.BorrowService borrowService;
+
+    // Student profile page
+    @GetMapping("/student/profile")
+    public String studentProfile(HttpSession session, Model model) {
+        Long studentId = (Long) session.getAttribute("studentId");
+        if (studentId == null) {
+            return "redirect:/student/login";
+        }
+        
+        List<com.library.model.BorrowRecord> allRecords = borrowService.getStudentBorrowedBooks(studentId);
+        long activeLoans = allRecords.stream()
+            .filter(r -> r.getStatus() == com.library.model.BorrowRecord.BorrowStatus.BORROWED)
+            .count();
+            
+        Student student = studentService.getStudentById(studentId);
+        
+        model.addAttribute("student", student);
+        model.addAttribute("totalBorrowed", allRecords.size());
+        model.addAttribute("activeLoans", activeLoans);
+        
+        return "student-profile";
     }
 
     // Student logout
