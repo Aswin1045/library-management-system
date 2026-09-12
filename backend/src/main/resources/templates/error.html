@@ -9,14 +9,7 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar">
-        <a href="/" class="navbar-brand">
-            <span>dY"s</span> Library Management System
-        </a>
-        <div class="navbar-links">
-            <a th:href="@{/}">Home</a>
-        </div>
-    </nav>
+    <div th:replace="~{fragments/nav :: navbar}"></div>
 
     <div class="container-sm mt-4">
         <div class="card text-center" style="padding: 40px;">
@@ -35,3 +28,4 @@
 
 </body>
 </html>
+

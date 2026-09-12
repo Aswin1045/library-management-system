@@ -9,18 +9,7 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar">
-        <a href="/" class="navbar-brand">
-            <span>📚</span> Library Management System
-        </a>
-        <div class="navbar-links">
-            <a th:href="@{/librarian/home}">Dashboard</a>
-            <a th:href="@{/librarian/books/add}">Add Book</a>
-            <a th:href="@{/librarian/students}">Students</a>
-            <a th:href="@{/librarian/borrow-records}">Borrow Records</a>
-            <a th:href="@{/librarian/logout}" class="btn-nav">Logout</a>
-        </div>
-    </nav>
+    <div th:replace="~{fragments/nav :: navbar}"></div>
 
     <div class="container">
         <div class="page-header">
@@ -77,9 +66,9 @@
 
         <!-- Empty State -->
         <div th:if="${#lists.size(books) == 0}" class="empty-state">
-            <div class="icon">📚</div>
-            <h3>No books in the library</h3>
-            <p><a th:href="@{/librarian/books/add}">Add your first book</a></p>
+            <div class="empty-state-icon">📚</div>
+            <h3 class="serif">No books in the library</h3>
+            <p class="text-muted"><a th:href="@{/librarian/books/add}">Add your first book</a></p>
         </div>
     </div>
 
@@ -89,3 +78,4 @@
 
 </body>
 </html>
+

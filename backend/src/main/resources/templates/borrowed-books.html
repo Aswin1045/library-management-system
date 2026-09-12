@@ -9,16 +9,7 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar">
-        <a href="/" class="navbar-brand">
-            <span>📚</span> Library Management System
-        </a>
-        <div class="navbar-links">
-            <a th:href="@{/student/home}">Dashboard</a>
-            <a th:href="@{/books}">View Books</a>
-            <a th:href="@{/student/logout}" class="btn-nav">Logout</a>
-        </div>
-    </nav>
+    <div th:replace="~{fragments/nav :: navbar}"></div>
 
     <div class="container">
         <div class="page-header">
@@ -71,9 +62,9 @@
 
         <!-- Empty State -->
         <div th:if="${#lists.size(records) == 0}" class="empty-state">
-            <div class="icon">📋</div>
-            <h3>No borrowed books</h3>
-            <p>You haven't borrowed any books yet. <a th:href="@{/books}">Browse available books</a></p>
+            <div class="empty-state-icon">📖</div>
+            <h3 class="serif">No borrowed books</h3>
+            <p class="text-muted">You haven't borrowed any books yet. <a th:href="@{/books}">Browse available books</a></p>
         </div>
     </div>
 
@@ -83,3 +74,4 @@
 
 </body>
 </html>
+

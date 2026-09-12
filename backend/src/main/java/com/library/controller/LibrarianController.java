@@ -54,10 +54,34 @@ public class LibrarianController {
         }
     }
 
+    @Autowired
+    private com.library.repository.BookRepository bookRepository;
+
+    @Autowired
+    private com.library.repository.BorrowRecordRepository borrowRecordRepository;
+
     // Librarian home/dashboard
     @GetMapping("/home")
     public String librarianHome(HttpSession session, Model model) {
         model.addAttribute("librarianName", session.getAttribute("librarianName"));
+        
+        long totalBooks = bookRepository.count();
+        long currentlyBorrowed = borrowRecordRepository.findAll().stream()
+                .filter(r -> r.getStatus() == com.library.model.BorrowRecord.BorrowStatus.BORROWED)
+                .count();
+        long lowStock = bookRepository.findAll().stream()
+                .filter(b -> b.getAvailableQuantity() <= 1)
+                .count();
+        long overdue = borrowRecordRepository.findAll().stream()
+                .filter(r -> r.getStatus() == com.library.model.BorrowRecord.BorrowStatus.BORROWED)
+                .filter(r -> r.getBorrowDate().plusDays(14).isBefore(java.time.LocalDate.now()))
+                .count();
+        
+        model.addAttribute("totalBooks", totalBooks);
+        model.addAttribute("currentlyBorrowed", currentlyBorrowed);
+        model.addAttribute("lowStock", lowStock);
+        model.addAttribute("overdue", overdue);
+
         return "librarian-home";
     }
 

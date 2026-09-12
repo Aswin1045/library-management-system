@@ -9,16 +9,7 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar">
-        <a href="/" class="navbar-brand">
-            <span>📚</span> Library Management System
-        </a>
-        <div class="navbar-links">
-            <a th:href="@{/books}">View Books</a>
-            <a th:href="@{/student/login}">Student Login</a>
-            <a th:href="@{/librarian/login}">Librarian Login</a>
-        </div>
-    </nav>
+    <div th:replace="~{fragments/nav :: navbar}"></div>
 
     <div class="container-sm mt-4">
         <div class="card">
@@ -72,3 +63,4 @@
 
 </body>
 </html>
+

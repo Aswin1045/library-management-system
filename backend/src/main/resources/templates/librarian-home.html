@@ -9,62 +9,65 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar">
-        <a href="/" class="navbar-brand">
-            <span>📚</span> Library Management System
-        </a>
-        <div class="navbar-links">
-            <a th:href="@{/librarian/books/add}">Add Book</a>
-            <a th:href="@{/librarian/books}">Manage Books</a>
-            <a th:href="@{/librarian/students}">Students</a>
-            <a th:href="@{/librarian/borrow-records}">Borrow Records</a>
-            <a th:href="@{/librarian/logout}" class="btn-nav">Logout</a>
-        </div>
-    </nav>
+    <div th:replace="~{fragments/nav :: navbar}"></div>
 
-    <div class="container">
+    <div class="container mt-4">
         <!-- Welcome Section -->
-        <div class="welcome-section">
-            <h2>Librarian Dashboard 📋</h2>
-            <p>Welcome, <span th:text="${librarianName}">Admin</span>! Manage the library from here.</p>
+        <div class="page-header">
+            <h2 class="serif">Librarian Dashboard</h2>
+            <p class="text-muted">Welcome, <span th:text="${librarianName}">Admin</span>!</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" th:text="${totalBooks != null ? totalBooks : 0}">0</div>
+                <div class="stat-label">Total Books</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${currentlyBorrowed != null ? currentlyBorrowed : 0}">0</div>
+                <div class="stat-label">Borrowed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${lowStock != null ? lowStock : 0}" th:classappend="${lowStock != null and lowStock > 0} ? 'text-danger' : ''">0</div>
+                <div class="stat-label">Low Stock</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${overdue != null ? overdue : 0}" th:classappend="${overdue != null and overdue > 0} ? 'text-danger' : ''">0</div>
+                <div class="stat-label">Overdue</div>
+            </div>
         </div>
 
         <!-- Dashboard Cards -->
-        <div class="dashboard-grid">
-            <a th:href="@{/librarian/books/add}" class="dashboard-card">
+        <div class="features-grid mb-4">
+            <a th:href="@{/librarian/books/add}" class="feature-card">
                 <div class="icon">➕</div>
                 <h3>Add Book</h3>
-                <p>Add a new book to the library collection</p>
+                <p class="text-muted">Add a new book to the library collection</p>
             </a>
 
-            <a th:href="@{/librarian/books}" class="dashboard-card">
+            <a th:href="@{/librarian/books}" class="feature-card">
                 <div class="icon">📚</div>
                 <h3>Manage Books</h3>
-                <p>View, edit, or delete books from the library</p>
+                <p class="text-muted">View, edit, or delete books from the library</p>
             </a>
 
-            <a th:href="@{/librarian/students}" class="dashboard-card">
+            <a th:href="@{/librarian/students}" class="feature-card">
                 <div class="icon">🎓</div>
                 <h3>View Students</h3>
-                <p>See all registered students</p>
+                <p class="text-muted">See all registered students</p>
             </a>
 
-            <a th:href="@{/librarian/borrow-records}" class="dashboard-card">
+            <a th:href="@{/librarian/borrow-records}" class="feature-card">
                 <div class="icon">📋</div>
                 <h3>Borrow Records</h3>
-                <p>Track book borrowing and return records</p>
-            </a>
-
-            <a th:href="@{/librarian/logout}" class="dashboard-card">
-                <div class="icon">🚪</div>
-                <h3>Logout</h3>
-                <p>Sign out of the dashboard</p>
+                <p class="text-muted">Track book borrowing and return records</p>
             </a>
         </div>
     </div>
 
     <div class="footer">
-        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+        <p>Library Management System &copy; 2026</p>
     </div>
 
 </body>
