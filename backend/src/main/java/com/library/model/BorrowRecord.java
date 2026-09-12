@@ -28,8 +28,9 @@ public class BorrowRecord {
     @Column(name = "return_date")
     private LocalDate returnDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
+    @org.hibernate.annotations.JdbcTypeCode(java.sql.Types.VARCHAR)
     private BorrowStatus status;
 
     // Enum for borrow status
