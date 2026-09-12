@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <span>📚</span> Library Management System
+        </a>
+        <div class="navbar-links">
+            <a th:href="@{/books}">View Books</a>
+            <a th:href="@{/student/login}">Student Login</a>
+            <a th:href="@{/librarian/login}">Librarian Login</a>
+        </div>
+    </nav>
+
+    <div class="container-sm mt-4">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2>🎓 Student Registration</h2>
+                <p>Create your account to start borrowing books</p>
+            </div>
+
+            <!-- Error Alert -->
+            <div th:if="${error}" class="alert alert-danger">
+                <span>⚠️</span> <span th:text="${error}"></span>
+            </div>
+
+            <form th:action="@{/register}" method="post" th:object="${student}">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="form-control" th:field="*{name}" placeholder="Enter your full name" required>
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger" style="color: red; font-size: 0.9em; margin-top: 5px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" th:field="*{email}" placeholder="Enter your email" required>
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger" style="color: red; font-size: 0.9em; margin-top: 5px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" th:field="*{password}" placeholder="Enter a password" required>
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger" style="color: red; font-size: 0.9em; margin-top: 5px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <input type="text" id="department" class="form-control" th:field="*{department}" placeholder="e.g. Computer Science" required>
+                    <div th:if="${#fields.hasErrors('department')}" th:errors="*{department}" class="text-danger" style="color: red; font-size: 0.9em; margin-top: 5px;"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">Register</button>
+            </form>
+
+            <p class="text-center mt-2">
+                Already have an account? <a th:href="@{/student/login}">Login here</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+    </div>
+
+</body>
+</html>

@@ -39,36 +39,44 @@ A web-based Library Management System that allows students to browse, borrow, an
 - View Registered Students
 - View All Borrow Records
 
-### Database Setup
+### Database Setup & How to Run
 
-**Default (H2 In-Memory Database):**
-- No setup needed! The application uses H2 by default and works out of the box.
-- Sample data is automatically loaded on startup.
+This project uses Spring Profiles to manage database configurations: `dev` (H2 in-memory) and `prod` (MySQL with Flyway migrations).
 
-**To switch to MySQL:**
-1. Install MySQL and start the MySQL server.
-2. Edit `src/main/resources/application.properties`:
-   - Comment out the H2 lines
-   - Uncomment the MySQL lines
-   - Set your MySQL username and password
-
-### How to Run
-
-1. Make sure **MySQL** is running.
-
-2. Update MySQL credentials in `application.properties` if needed.
-
-3. Open a terminal in the project root and run:
+#### Development Mode (Default)
+The `dev` profile is active by default. It uses an H2 in-memory database with Hibernate `create-drop` to easily test without any setup.
+1. Run the application:
    ```bash
    mvn spring-boot:run
    ```
-
-4. Open your browser and go to:
+   Or explicitly specify the dev profile:
+   ```bash
+   mvn spring-boot:run -Dspring-boot.run.profiles=dev
    ```
-   http://localhost:9090
-   ```
+2. Open your browser and go to: `http://localhost:9090`
+3. Sample data is automatically loaded on startup!
 
-5. Use the application!
+#### Production Mode (MySQL + Flyway)
+The `prod` profile uses MySQL and disables Hibernate's `ddl-auto`. Instead, the database schema is managed via Flyway migrations (e.g., `V1__init.sql`).
+No hardcoded credentials exist; you must provide environment variables.
+
+1. **Start the local MySQL database** using the provided `docker-compose.yml`:
+   ```bash
+   docker-compose up -d
+   ```
+   This spins up a MySQL container listening on port 3306 with database `library_prod`, user `library_user`, and password `library_password`.
+
+2. **Run the application with the `prod` profile and environment variables:**
+   ```bash
+   # Windows (PowerShell)
+   $env:DB_URL="jdbc:mysql://localhost:3306/library_prod"
+   $env:DB_USER="library_user"
+   $env:DB_PASSWORD="library_password"
+   mvn spring-boot:run -Dspring-boot.run.profiles=prod
+   ```
+   *(For Linux/Mac use `export DB_URL=...` instead of `$env:`)*
+
+3. Open your browser and go to: `http://localhost:9090`
 
 ### Sample Login Credentials
 
@@ -123,7 +131,11 @@ src/main/resources/
 │   ├── students.html
 │   └── borrow-records.html
 ├── static/css/style.css
-└── application.properties
+├── db/migration/
+│   └── V1__init.sql        (Flyway DB Migration)
+└── application.yml         (Profiles & App Config)
+
+docker-compose.yml          (Local MySQL setup)
 ```
 
 ### OOAD Concepts Demonstrated
