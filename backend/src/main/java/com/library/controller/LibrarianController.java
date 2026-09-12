@@ -29,8 +29,6 @@ public class LibrarianController {
         return "librarian-login";
     }
 
-    @Autowired
-    private com.library.repository.LibrarianRepository librarianRepository;
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(LibrarianController.class);
 

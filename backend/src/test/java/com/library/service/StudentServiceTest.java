@@ -17,7 +17,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class StudentServiceTest {
+@SuppressWarnings("null")
+class StudentServiceTest {
 
     @Mock
     private StudentRepository studentRepository;

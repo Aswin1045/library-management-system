@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @Service
+@SuppressWarnings("null")
 public class BookService {
 
     @Autowired

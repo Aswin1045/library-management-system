@@ -5,12 +5,12 @@ import com.library.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
+@SuppressWarnings("null")
 public class StudentService {
 
     @Autowired
