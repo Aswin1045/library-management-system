@@ -29,7 +29,7 @@ public class Book {
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = "ISBN is required")
-    @Size(min = 10, max = 13, message = "ISBN must be 10 to 13 characters")
+    @Size(min = 10, max = 17, message = "ISBN must be 10 to 17 characters")
     private String isbn;
 
     @Column(nullable = false)

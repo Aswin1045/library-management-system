@@ -25,7 +25,7 @@ public class Student {
     @Email(message = "Invalid email format")
     private String email;
 
-    @JsonIgnore
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
