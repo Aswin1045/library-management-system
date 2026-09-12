@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import client from '../api/client';
 import { Spinner, ErrorMessage, EmptyState } from '../components/ui/Feedback';
+import { motion } from 'framer-motion';
 
 const StudentDashboard = () => {
   const [loans, setLoans] = useState([]);
@@ -28,8 +29,8 @@ const StudentDashboard = () => {
   const handleReturn = async (recordId) => {
     setReturningId(recordId);
     try {
-      await client.post(`/return/${recordId}`);
-      fetchLoans(); // Refresh list
+      await client.post('/return/' + recordId);
+      fetchLoans();
     } catch (err) {
       alert(err.response?.data?.error || 'Failed to return book');
     } finally {
@@ -40,9 +41,22 @@ const StudentDashboard = () => {
   const activeLoans = loans.filter(l => l.status === 'BORROWED');
   const pastLoans = loans.filter(l => l.status === 'RETURNED');
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div>
-      <h2 style={{ marginBottom: 'var(--space-xl)' }}>My Dashboard</h2>
+    <motion.div variants={containerVariants} initial="hidden" animate="show">
+      <motion.h2 variants={itemVariants} style={{ marginBottom: 'var(--space-xl)' }}>My Dashboard</motion.h2>
       
       {error && <ErrorMessage message={error} onRetry={fetchLoans} />}
 
@@ -50,7 +64,7 @@ const StudentDashboard = () => {
         <Spinner />
       ) : (
         <>
-          <div style={{ marginBottom: 'var(--space-xxl)' }}>
+          <motion.div variants={itemVariants} style={{ marginBottom: 'var(--space-xxl)' }}>
             <h3 className="serif" style={{ marginBottom: 'var(--space-md)' }}>Active Loans ({activeLoans.length})</h3>
             {activeLoans.length === 0 ? (
               <EmptyState title="No active loans" description="You don't have any books currently borrowed." />
@@ -77,18 +91,19 @@ const StudentDashboard = () => {
                         </td>
                         <td style={styles.td}>
                           {loan.fineAmount > 0 ? (
-                            <span style={{ color: 'var(--danger)', fontWeight: '600' }}>${loan.fineAmount.toFixed(2)}</span>
+                            <span style={{ color: 'var(--danger)', fontWeight: '600' }}>{'$' + loan.fineAmount.toFixed(2)}</span>
                           ) : '$0.00'}
                         </td>
                         <td style={styles.td}>
-                          <button 
+                          <motion.button 
+                            whileTap={{ scale: 0.95 }}
                             className="btn btn-outline" 
                             style={{ padding: '4px 12px', fontSize: '0.85rem' }}
                             onClick={() => handleReturn(loan.id)}
                             disabled={returningId === loan.id}
                           >
                             {returningId === loan.id ? 'Returning...' : 'Return'}
-                          </button>
+                          </motion.button>
                         </td>
                       </tr>
                     ))}
@@ -96,9 +111,9 @@ const StudentDashboard = () => {
                 </table>
               </div>
             )}
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div variants={itemVariants}>
             <h3 className="serif" style={{ marginBottom: 'var(--space-md)' }}>Recently Returned</h3>
             {pastLoans.length === 0 ? (
               <p style={{ color: 'var(--text-muted)' }}>No past borrowing history.</p>
@@ -124,10 +139,10 @@ const StudentDashboard = () => {
                 </table>
               </div>
             )}
-          </div>
+          </motion.div>
         </>
       )}
-    </div>
+    </motion.div>
   );
 };
 

@@ -50,6 +50,7 @@
 }
 
 body {
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z' fill='%232c5545' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
   font-family: var(--font-sans);
   background-color: var(--bg-color);
   color: var(--text-main);
@@ -127,3 +128,4 @@ a:hover {
   outline: none;
   border-color: var(--border-focus);
 }
+

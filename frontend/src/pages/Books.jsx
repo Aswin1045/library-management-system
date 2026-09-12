@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import client from '../api/client';
 import { AuthContext } from '../context/AuthContext';
 import { Spinner, ErrorMessage, EmptyState } from '../components/ui/Feedback';
+import { motion } from 'framer-motion';
 
 const Books = () => {
   const [books, setBooks] = useState([]);
@@ -28,7 +29,7 @@ const Books = () => {
         ...(category && { category }),
         ...(availableOnly && { availableOnly: true }),
       });
-      const res = await client.get(`/books?${params.toString()}`);
+      const res = await client.get('/books?' + params.toString());
       setBooks(res.data.content);
       setTotalPages(res.data.totalPages);
     } catch (err) {
@@ -40,7 +41,7 @@ const Books = () => {
 
   useEffect(() => {
     fetchBooks();
-  }, [page, category, availableOnly]); // Search triggers on form submit
+  }, [page, category, availableOnly]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -51,14 +52,27 @@ const Books = () => {
   const handleBorrow = async (bookId) => {
     setBorrowingId(bookId);
     try {
-      await client.post(`/borrow/${bookId}`);
+      await client.post('/borrow/' + bookId);
       alert('Book borrowed successfully!');
-      fetchBooks(); // Refresh to update availability
+      fetchBooks();
     } catch (err) {
       alert(err.response?.data?.error || 'Failed to borrow book');
     } finally {
       setBorrowingId(null);
     }
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 20 } }
   };
 
   return (
@@ -98,7 +112,7 @@ const Books = () => {
             />
             Available Only
           </label>
-          <button type="submit" className="btn btn-primary">Search</button>
+          <motion.button whileTap={{ scale: 0.95 }} type="submit" className="btn btn-primary">Search</motion.button>
         </form>
       </div>
 
@@ -110,9 +124,21 @@ const Books = () => {
         <EmptyState title="No Books Found" description="Try adjusting your search or filters." />
       ) : (
         <>
-          <div style={styles.grid}>
+          <motion.div 
+            style={styles.grid}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+          >
             {books.map(book => (
-              <div key={book.id} className="card" style={styles.bookCard}>
+              <motion.div 
+                key={book.id} 
+                className="card" 
+                style={styles.bookCard}
+                variants={cardVariants}
+                whileHover={{ y: -5, boxShadow: '0 8px 30px rgba(0,0,0,0.1)' }}
+              >
                 <div style={styles.coverPlaceholder}>{book.title.charAt(0)}</div>
                 <div style={styles.bookInfo}>
                   <span style={styles.categoryBadge}>{book.category}</span>
@@ -125,38 +151,39 @@ const Books = () => {
                       fontWeight: 600, 
                       color: book.availableQuantity > 0 ? 'var(--accent)' : 'var(--danger)' 
                     }}>
-                      {book.availableQuantity > 0 ? `${book.availableQuantity} Available` : 'Checked Out'}
+                      {book.availableQuantity > 0 ? book.availableQuantity + ' Available' : 'Checked Out'}
                     </span>
                     
                     {role === 'STUDENT' && book.availableQuantity > 0 && (
-                      <button 
+                      <motion.button 
+                        whileTap={{ scale: 0.95 }}
                         className="btn btn-outline" 
                         style={{ padding: '4px 12px', fontSize: '0.85rem' }}
                         onClick={() => handleBorrow(book.id)}
                         disabled={borrowingId === book.id}
                       >
                         {borrowingId === book.id ? '...' : 'Borrow'}
-                      </button>
+                      </motion.button>
                     )}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {totalPages > 1 && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--space-sm)', marginTop: 'var(--space-xl)' }}>
-              <button 
+              <motion.button whileTap={{ scale: 0.95 }}
                 className="btn btn-outline" 
                 disabled={page === 0} 
                 onClick={() => setPage(p => p - 1)}
-              >Previous</button>
+              >Previous</motion.button>
               <span style={{ display: 'flex', alignItems: 'center' }}>Page {page + 1} of {totalPages}</span>
-              <button 
+              <motion.button whileTap={{ scale: 0.95 }}
                 className="btn btn-outline" 
                 disabled={page >= totalPages - 1} 
                 onClick={() => setPage(p => p + 1)}
-              >Next</button>
+              >Next</motion.button>
             </div>
           )}
         </>
@@ -205,3 +232,4 @@ const styles = {
 };
 
 export default Books;
+

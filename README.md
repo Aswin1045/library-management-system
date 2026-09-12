@@ -1,4 +1,4 @@
-# Library Management System
+# Folio
 
 A full-stack modern web application for managing library books, tracking loans, calculating fines, and managing student accounts. This project features a clean, responsive UI matching a "reading app" aesthetic and is built with a robust Spring Boot backend.
 

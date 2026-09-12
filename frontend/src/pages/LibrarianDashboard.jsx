@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import client from '../api/client';
 import { Spinner, ErrorMessage } from '../components/ui/Feedback';
+import { motion, animate, useMotionValue, useTransform } from 'framer-motion';
+
+const AnimatedNumber = ({ value }) => {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, Math.round);
+
+  useEffect(() => {
+    const animation = animate(count, value, { duration: 1.5, ease: "easeOut" });
+    return animation.stop;
+  }, [value]);
+
+  return <motion.span>{rounded}</motion.span>;
+};
 
 const LibrarianDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -23,6 +36,19 @@ const LibrarianDashboard = () => {
     fetchStats();
   }, []);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+  
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   return (
     <div>
       <h2 style={{ marginBottom: 'var(--space-xl)' }}>Librarian Dashboard</h2>
@@ -30,28 +56,28 @@ const LibrarianDashboard = () => {
       {error && <ErrorMessage message={error} onRetry={fetchStats} />}
       
       {loading ? <Spinner /> : stats && (
-        <div style={styles.grid}>
-          <div className="card" style={styles.statCard}>
+        <motion.div style={styles.grid} variants={containerVariants} initial="hidden" animate="show">
+          <motion.div className="card" style={styles.statCard} variants={cardVariants}>
             <div style={styles.statTitle}>Total Books</div>
-            <div style={styles.statValue}>{stats.totalBooks}</div>
-          </div>
-          <div className="card" style={styles.statCard}>
+            <div style={styles.statValue}><AnimatedNumber value={stats.totalBooks} /></div>
+          </motion.div>
+          <motion.div className="card" style={styles.statCard} variants={cardVariants}>
             <div style={styles.statTitle}>Currently Borrowed</div>
-            <div style={{ ...styles.statValue, color: 'var(--accent)' }}>{stats.currentlyBorrowed}</div>
-          </div>
-          <div className="card" style={styles.statCard}>
+            <div style={{ ...styles.statValue, color: 'var(--accent)' }}><AnimatedNumber value={stats.currentlyBorrowed} /></div>
+          </motion.div>
+          <motion.div className="card" style={styles.statCard} variants={cardVariants}>
             <div style={styles.statTitle}>Low Stock (&lt; 2)</div>
             <div style={{ ...styles.statValue, color: stats.lowStock > 0 ? 'var(--warning)' : 'inherit' }}>
-              {stats.lowStock}
+              <AnimatedNumber value={stats.lowStock} />
             </div>
-          </div>
-          <div className="card" style={styles.statCard}>
+          </motion.div>
+          <motion.div className="card" style={styles.statCard} variants={cardVariants}>
             <div style={styles.statTitle}>Overdue Items</div>
             <div style={{ ...styles.statValue, color: stats.overdue > 0 ? 'var(--danger)' : 'inherit' }}>
-              {stats.overdue}
+              <AnimatedNumber value={stats.overdue} />
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import client from '../api/client';
 import { Spinner, ErrorMessage } from '../components/ui/Feedback';
 
@@ -66,9 +67,9 @@ const ManageBooks = () => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-xl)' }}>
         <h2>Manage Books</h2>
-        <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setFormData({ id: null, title: '', author: '', isbn: '', category: '', quantity: 1, availableQuantity: 1 }); }}>
+        <motion.button whileTap={{ scale: 0.95 }} className="btn btn-primary" onClick={() => { setShowForm(!showForm); setFormData({ id: null, title: '', author: '', isbn: '', category: '', quantity: 1, availableQuantity: 1 }); }}>
           {showForm ? 'Cancel' : 'Add New Book'}
-        </button>
+        </motion.button>
       </div>
 
       {showForm && (
@@ -84,7 +85,7 @@ const ManageBooks = () => {
               <input type="number" min="1" className="form-control" value={formData.quantity} onChange={e => setFormData({...formData, quantity: e.target.value})} required />
             </label>
             <div style={{ width: '100%', marginTop: 'var(--space-sm)' }}>
-              <button type="submit" className="btn btn-primary">Save Book</button>
+              <motion.button whileTap={{ scale: 0.95 }} type="submit" className="btn btn-primary">Save Book</motion.button>
             </div>
           </form>
         </div>
@@ -110,8 +111,8 @@ const ManageBooks = () => {
                   <td style={styles.td}>{book.category}</td>
                   <td style={styles.td}>{book.availableQuantity} / {book.quantity}</td>
                   <td style={styles.td}>
-                    <button className="btn btn-outline" style={styles.actionBtn} onClick={() => handleEdit(book)}>Edit</button>
-                    <button className="btn btn-outline" style={{...styles.actionBtn, color: 'var(--danger)', borderColor: 'var(--danger-light)'}} onClick={() => handleDelete(book.id)}>Delete</button>
+                    <motion.button whileTap={{ scale: 0.95 }} className="btn btn-outline" style={styles.actionBtn} onClick={() => handleEdit(book)}>Edit</motion.button>
+                    <motion.button whileTap={{ scale: 0.95 }} className="btn btn-outline" style={{...styles.actionBtn, color: 'var(--danger)', borderColor: 'var(--danger-light)'}} onClick={() => handleDelete(book.id)}>Delete</motion.button>
                   </td>
                 </tr>
               ))}
@@ -122,8 +123,8 @@ const ManageBooks = () => {
 
       {totalPages > 1 && (
         <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--space-sm)', marginTop: 'var(--space-xl)' }}>
-          <button className="btn btn-outline" disabled={page === 0} onClick={() => setPage(p => p - 1)}>Prev</button>
-          <button className="btn btn-outline" disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)}>Next</button>
+          <motion.button whileTap={{ scale: 0.95 }} className="btn btn-outline" disabled={page === 0} onClick={() => setPage(p => p - 1)}>Prev</motion.button>
+          <motion.button whileTap={{ scale: 0.95 }} className="btn btn-outline" disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)}>Next</motion.button>
         </div>
       )}
     </div>
