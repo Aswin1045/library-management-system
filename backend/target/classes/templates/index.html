@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/nav :: navbar}"></div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1 class="serif">Library Management System</h1>
+        <p>A beautifully simple, elegant way to browse, borrow, and manage books.</p>
+        <div class="hero-buttons">
+            <a th:href="@{/register}" class="btn btn-primary">Student Registration</a>
+            <a th:href="@{/student/login}" class="btn btn-outline">Student Login</a>
+            <a th:href="@{/librarian/login}" class="btn btn-outline">Librarian Login</a>
+            <a th:href="@{/books}" class="btn btn-outline">View Books</a>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="container mb-4">
+        <h2 class="text-center mb-3 text-lg serif">Key Features</h2>
+        <div class="features-grid">
+            <a th:href="@{/books}" class="feature-card">
+                <div class="icon">📚</div>
+                <h3>Browse Books</h3>
+                <p class="text-muted">Search and explore our collection of books across various categories.</p>
+            </a>
+            <a th:href="@{/student/login}" class="feature-card">
+                <div class="icon">🎓</div>
+                <h3>Student Portal</h3>
+                <p class="text-muted">Register, login, borrow and return books with a few simple clicks.</p>
+            </a>
+            <a th:href="@{/librarian/login}" class="feature-card">
+                <div class="icon">📋</div>
+                <h3>Librarian Dashboard</h3>
+                <p class="text-muted">Manage books, view students and track all borrowing records easily.</p>
+            </a>
+            <a th:href="@{/books}" class="feature-card">
+                <div class="icon">🔍</div>
+                <h3>Quick Search</h3>
+                <p class="text-muted">Find books instantly by title, author or category.</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+    </div>
+
+</body>
+</html>
+

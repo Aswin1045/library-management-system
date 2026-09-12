@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Home - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/nav :: navbar}"></div>
+
+    <div class="container mt-4">
+        <!-- Welcome Section -->
+        <div class="page-header">
+            <h2 class="serif">Student Dashboard</h2>
+            <p class="text-muted">Welcome, <span th:text="${studentName}">Student</span>!</p>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="features-grid mb-4">
+            <a th:href="@{/books}" class="feature-card">
+                <div class="icon">📚</div>
+                <h3>View Books</h3>
+                <p class="text-muted">Browse and search available books in the library</p>
+            </a>
+
+            <a th:href="@{/student/borrowed-books}" class="feature-card">
+                <div class="icon">📖</div>
+                <h3>My Borrowed Books</h3>
+                <p class="text-muted">View your current and past borrowed books</p>
+            </a>
+
+            <a th:href="@{/student/profile}" class="feature-card">
+                <div class="icon">👤</div>
+                <h3>My Profile</h3>
+                <p class="text-muted">View your borrowing history and active loan stats</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+    </div>
+
+</body>
+</html>
+

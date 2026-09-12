@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar" th:fragment="navbar">
+    <div class="nav-container">
+        <a href="/" class="navbar-brand">
+            <span class="brand-icon">📚</span> Library
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+        <div class="navbar-links" id="navLinks">
+            <!-- Public links -->
+            <th:block th:if="${session.librarianId == null and session.studentId == null}">
+                <a th:href="@{/}" th:classappend="${#httpServletRequest.requestURI == '/'} ? 'active' : ''">Home</a>
+                <a th:href="@{/books}" th:classappend="${#httpServletRequest.requestURI == '/books'} ? 'active' : ''">Books</a>
+                <a th:href="@{/student/login}" th:classappend="${#httpServletRequest.requestURI == '/student/login' or #httpServletRequest.requestURI == '/register'} ? 'active' : ''">Student Portal</a>
+                <a th:href="@{/librarian/login}" th:classappend="${#httpServletRequest.requestURI == '/librarian/login'} ? 'active' : ''">Librarian Login</a>
+            </th:block>
+
+            <!-- Student links -->
+            <th:block th:if="${session.studentId != null}">
+                <a th:href="@{/student/home}" th:classappend="${#httpServletRequest.requestURI == '/student/home'} ? 'active' : ''">My Dashboard</a>
+                <a th:href="@{/student/profile}" th:classappend="${#httpServletRequest.requestURI == '/student/profile'} ? 'active' : ''">My Profile</a>
+                <a th:href="@{/books}" th:classappend="${#httpServletRequest.requestURI == '/books'} ? 'active' : ''">Browse Books</a>
+                <a th:href="@{/student/borrowed-books}" th:classappend="${#httpServletRequest.requestURI == '/student/borrowed-books'} ? 'active' : ''">My Books</a>
+                <a th:href="@{/student/logout}" class="btn-logout">Logout</a>
+            </th:block>
+
+            <!-- Librarian links -->
+            <th:block th:if="${session.librarianId != null}">
+                <a th:href="@{/librarian/home}" th:classappend="${#httpServletRequest.requestURI == '/librarian/home'} ? 'active' : ''">Dashboard</a>
+                <a th:href="@{/librarian/books}" th:classappend="${#httpServletRequest.requestURI != null and #httpServletRequest.requestURI.startsWith('/librarian/books')} ? 'active' : ''">Manage Books</a>
+                <a th:href="@{/librarian/students}" th:classappend="${#httpServletRequest.requestURI == '/librarian/students'} ? 'active' : ''">Students</a>
+                <a th:href="@{/librarian/borrow-records}" th:classappend="${#httpServletRequest.requestURI == '/librarian/borrow-records'} ? 'active' : ''">Borrow Records</a>
+                <a th:href="@{/librarian/logout}" class="btn-logout">Logout</a>
+            </th:block>
+        </div>
+    </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile Nav Toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // Button Loading States on Form Submit
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            // Check if form is valid before showing loading state
+            if (!this.checkValidity()) return;
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+                
+                // Allow the form to submit naturally
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>

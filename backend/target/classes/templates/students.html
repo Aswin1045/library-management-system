@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/nav :: navbar}"></div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>🎓 Registered Students</h2>
+        </div>
+
+        <!-- Students Table -->
+        <div th:if="${#lists.size(students) > 0}" class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="student : ${students}">
+                        <td th:text="${student.id}">1</td>
+                        <td th:text="${student.name}">Student Name</td>
+                        <td th:text="${student.email}">student@email.com</td>
+                        <td><span class="badge badge-success" th:text="${student.department}">CSE</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Pagination -->
+            <div th:if="${studentPage != null and studentPage.totalPages > 1}" class="pagination mt-4 mb-4" style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                <a th:if="${studentPage.hasPrevious()}" th:href="@{/librarian/students(page=${studentPage.number - 1})}" class="btn btn-outline btn-sm">Previous</a>
+                
+                <span style="display: flex; align-items: center; padding: 0 1rem;" th:text="${'Page ' + (studentPage.number + 1) + ' of ' + studentPage.totalPages}">Page 1 of 3</span>
+                
+                <a th:if="${studentPage.hasNext()}" th:href="@{/librarian/students(page=${studentPage.number + 1})}" class="btn btn-outline btn-sm">Next</a>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.size(students) == 0}" class="empty-state">
+            <div class="empty-state-icon">🎓</div>
+            <h3 class="serif">No students registered yet</h3>
+            <p class="text-muted">Students will appear here once they register.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+    </div>
+
+</body>
+</html>
+

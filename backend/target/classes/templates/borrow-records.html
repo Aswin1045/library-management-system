@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Records - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/nav :: navbar}"></div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>📋 Borrow Records</h2>
+        </div>
+
+        <!-- Borrow Records Table -->
+        <div th:if="${#lists.size(records) > 0}" class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Borrow Date</th>
+                        <th>Due Date</th>
+                        <th>Return Date</th>
+                        <th>Status</th>
+                        <th>Fine</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="record : ${records}">
+                        <td th:text="${record.id}">1</td>
+                        <td th:text="${record.student.name}">Student</td>
+                        <td th:text="${record.book.title}">Book</td>
+                        <td th:text="${record.borrowDate}">2025-01-01</td>
+                        <td>
+                            <span th:text="${record.dueDate}">2025-01-15</span>
+                            <span th:if="${record.isOverdue()}" class="badge badge-unavailable" style="margin-left: 5px;">OVERDUE</span>
+                        </td>
+                        <td>
+                            <span th:if="${record.returnDate != null}" th:text="${record.returnDate}">2025-01-15</span>
+                            <span th:if="${record.returnDate == null}" class="text-muted">-</span>
+                        </td>
+                        <td>
+                            <span th:if="${record.status.name() == 'BORROWED'}" class="badge badge-warning">BORROWED</span>
+                            <span th:if="${record.status.name() == 'RETURNED'}" class="badge badge-available">RETURNED</span>
+                        </td>
+                        <td>
+                            <span th:if="${record.getFineAmount() > 0}" class="text-danger" th:text="${'$' + #numbers.formatDecimal(record.getFineAmount(), 1, 2)}">$0.00</span>
+                            <span th:if="${record.getFineAmount() == 0}" class="text-muted">$0.00</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Pagination -->
+            <div th:if="${recordPage != null and recordPage.totalPages > 1}" class="pagination mt-4 mb-4" style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                <a th:if="${recordPage.hasPrevious()}" th:href="@{/librarian/borrow-records(page=${recordPage.number - 1})}" class="btn btn-outline btn-sm">Previous</a>
+                
+                <span style="display: flex; align-items: center; padding: 0 1rem;" th:text="${'Page ' + (recordPage.number + 1) + ' of ' + recordPage.totalPages}">Page 1 of 3</span>
+                
+                <a th:if="${recordPage.hasNext()}" th:href="@{/librarian/borrow-records(page=${recordPage.number + 1})}" class="btn btn-outline btn-sm">Next</a>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.size(records) == 0}" class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <h3 class="serif">No borrow records found</h3>
+            <p class="text-muted">Records will appear here when students borrow books.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Library Management System &copy; 2025 | OOAD Lab Project</p>
+    </div>
+
+</body>
+</html>
+

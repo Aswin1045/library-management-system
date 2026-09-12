@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: Library Management System
+  profiles:
+    active: dev # Default profile
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: lax
+  port: 9090
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:h2:mem:library_management;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: false # Let Hibernate manage DDL in dev with create-drop
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 30000
+      minimum-idle: 2
+      idle-timeout: 600000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate # Turn off ddl-auto completely, just validate
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  flyway:
+    enabled: true
+    url: ${DB_URL}
+    user: ${DB_USER}
+    password: ${DB_PASSWORD}

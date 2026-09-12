@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/nav :: navbar}"></div>
+
+    <div class="container mt-4">
+        <div class="page-header">
+            <h2 class="serif">Available Books</h2>
+        </div>
+
+        <!-- Success/Error Alerts -->
+        <div th:if="${success}" class="alert alert-success">
+            <span th:text="${success}"></span>
+        </div>
+        <div th:if="${error}" class="alert alert-danger">
+            <span th:text="${error}"></span>
+        </div>
+
+        <!-- Search Bar -->
+        <form th:action="@{/books}" method="get" class="search-form" style="flex-wrap: wrap; align-items: center;">
+            <input type="text" name="search" id="searchInput" class="form-control" style="flex: 2; min-width: 200px;" placeholder="Search by title, author, or category..." th:value="${search}">
+            
+            <select name="category" class="form-control" style="flex: 1; min-width: 150px;">
+                <option value="">All Categories</option>
+                <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}" th:selected="${cat == category}"></option>
+            </select>
+            
+            <label style="display: flex; align-items: center; gap: 0.5rem; margin: 0 var(--space-sm);">
+                <input type="checkbox" name="availableOnly" th:checked="${availableOnly}"> Available Only
+            </label>
+            
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a th:href="@{/books}" class="btn btn-outline">Clear</a>
+        </form>
+
+        <!-- Books Grid -->
+        <div th:if="${#lists.size(books) > 0}">
+            <div class="books-grid">
+                <div th:each="book : ${books}" class="book-card">
+                    <!-- Cover placeholder: Initials of title -->
+                    <div class="book-cover" th:text="${#strings.substring(book.title,0,1)}">A</div>
+                    
+                    <div class="book-info">
+                        <div class="book-category" th:text="${book.category}">Category</div>
+                        <div class="book-title" th:text="${book.title}">Book Title</div>
+                        <div class="book-author" th:text="${book.author}">Author</div>
+                        
+                        <div class="book-meta">
+                            <span th:if="${book.availableQuantity > 0}" class="badge badge-available">
+                                Available (<span th:text="${book.availableQuantity}"></span>)
+                            </span>
+                            <span th:if="${book.availableQuantity <= 0}" class="badge badge-unavailable">
+                                Borrowed Out
+                            </span>
+
+                            <div th:if="${isStudentLoggedIn}">
+                                <a th:if="${book.availableQuantity > 0}" th:href="@{/student/borrow/{id}(id=${book.id})}" class="btn btn-primary btn-sm">Borrow</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div th:if="${bookPage.totalPages > 1}" class="pagination mt-4" style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                <a th:if="${bookPage.hasPrevious()}" th:href="@{/books(search=${search}, category=${category}, availableOnly=${availableOnly}, page=${bookPage.number - 1})}" class="btn btn-outline btn-sm">Previous</a>
+                
+                <span style="display: flex; align-items: center; padding: 0 1rem;" th:text="${'Page ' + (bookPage.number + 1) + ' of ' + bookPage.totalPages}">Page 1 of 3</span>
+                
+                <a th:if="${bookPage.hasNext()}" th:href="@{/books(search=${search}, category=${category}, availableOnly=${availableOnly}, page=${bookPage.number + 1})}" class="btn btn-outline btn-sm">Next</a>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.size(books) == 0}" class="empty-state">
+            <div class="empty-state-icon">📚</div>
+            <h3 class="serif">No books found</h3>
+            <p class="text-muted">Try adjusting your search or check back later.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Library Management System &copy; 2026</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const bookCards = document.querySelectorAll('.book-card');
+            
+            if (searchInput && bookCards.length > 0) {
+                searchInput.addEventListener('input', function(e) {
+                    const term = e.target.value.toLowerCase().trim();
+                    
+                    bookCards.forEach(card => {
+                        const title = card.querySelector('.book-title').textContent.toLowerCase();
+                        const author = card.querySelector('.book-author').textContent.toLowerCase();
+                        const category = card.querySelector('.book-category').textContent.toLowerCase();
+                        
+                        if (title.includes(term) || author.includes(term) || category.includes(term)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Dashboard - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/nav :: navbar}"></div>
+
+    <div class="container mt-4">
+        <!-- Welcome Section -->
+        <div class="page-header">
+            <h2 class="serif">Librarian Dashboard</h2>
+            <p class="text-muted">Welcome, <span th:text="${librarianName}">Admin</span>!</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" th:text="${totalBooks != null ? totalBooks : 0}">0</div>
+                <div class="stat-label">Total Books</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${currentlyBorrowed != null ? currentlyBorrowed : 0}">0</div>
+                <div class="stat-label">Borrowed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${lowStock != null ? lowStock : 0}" th:classappend="${lowStock != null and lowStock > 0} ? 'text-danger' : ''">0</div>
+                <div class="stat-label">Low Stock</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${overdue != null ? overdue : 0}" th:classappend="${overdue != null and overdue > 0} ? 'text-danger' : ''">0</div>
+                <div class="stat-label">Overdue</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="features-grid mb-4">
+            <a th:href="@{/librarian/books/add}" class="feature-card">
+                <div class="icon">➕</div>
+                <h3>Add Book</h3>
+                <p class="text-muted">Add a new book to the library collection</p>
+            </a>
+
+            <a th:href="@{/librarian/books}" class="feature-card">
+                <div class="icon">📚</div>
+                <h3>Manage Books</h3>
+                <p class="text-muted">View, edit, or delete books from the library</p>
+            </a>
+
+            <a th:href="@{/librarian/students}" class="feature-card">
+                <div class="icon">🎓</div>
+                <h3>View Students</h3>
+                <p class="text-muted">See all registered students</p>
+            </a>
+
+            <a th:href="@{/librarian/borrow-records}" class="feature-card">
+                <div class="icon">📋</div>
+                <h3>Borrow Records</h3>
+                <p class="text-muted">Track book borrowing and return records</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Library Management System &copy; 2026</p>
+    </div>
+
+</body>
+</html>
