@@ -3,16 +3,18 @@
 :root {
   /* Colors - Warm Reading App Theme */
   --bg-color: #FAF8F5;       /* Cream background */
+  --background: #FAF8F5;     /* alias */
   --surface: #FFFFFF;        /* White cards */
-  --surface-alt: #F2EFE9;    /* Slightly darker cream for empty states/accents */
+  --surface-alt: #F2EFE9;    /* Slightly darker cream */
   
   --text-main: #2C2A29;      /* Dark warm grey */
   --text-muted: #73706E;     /* Medium warm grey */
   --text-light: #9B9895;     /* Light warm grey */
   
   --accent: #2C5545;         /* Deep Forest Green */
+  --primary: #2C5545;        /* alias */
   --accent-hover: #1E3D31;
-  --accent-light: #E9F0EC;   /* Very light green for backgrounds */
+  --accent-light: #E9F0EC;   /* Very light green */
   
   --danger: #9E2A2B;         /* Burgundy red for errors/destructive actions */
   --danger-light: #FCE8E8;

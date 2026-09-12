@@ -18,8 +18,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         // API Routes Auth handling
         if (uri.startsWith("/api/")) {
-            // Public API routes
-            if (uri.startsWith("/api/auth/") || (uri.equals("/api/books") && request.getMethod().equals("GET"))) {
+            // Public API routes — no auth required
+            if (uri.startsWith("/api/auth/")
+                    || uri.startsWith("/api/stats/public")
+                    || (uri.equals("/api/books") && request.getMethod().equals("GET"))) {
                 return true;
             }
 

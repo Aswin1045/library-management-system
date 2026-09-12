@@ -23,6 +23,7 @@ public class DashboardApiController {
     @Autowired
     private BorrowRecordRepository borrowRecordRepository;
 
+    // Librarian-only stats
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Long>> getStats() {
         long totalBooks = bookRepository.count();
@@ -46,3 +47,4 @@ public class DashboardApiController {
         return ResponseEntity.ok(stats);
     }
 }
+
