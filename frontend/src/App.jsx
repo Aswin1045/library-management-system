@@ -3,25 +3,18 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 import Layout from './components/Layout';
 
-// Quick placeholders for pages
-const Home = () => (
-  <div style={{ textAlign: 'center', marginTop: 'var(--space-xxl)' }}>
-    <h1 className="serif">Welcome to the Library</h1>
-    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginTop: 'var(--space-sm)' }}>
-      Discover your next favorite book today.
-    </p>
-  </div>
-);
-const Login = () => <h2>Student Login Page</h2>;
-const Register = () => <h2>Register Page</h2>;
-const Books = () => <h2>Browse Books Page</h2>;
-const StudentDashboard = () => <h2>Student Dashboard</h2>;
-const StudentProfile = () => <h2>My Profile</h2>;
-const LibrarianLogin = () => <h2>Librarian Login Page</h2>;
-const LibrarianDashboard = () => <h2>Librarian Dashboard</h2>;
-const ManageBooks = () => <h2>Manage Books Page</h2>;
-const Students = () => <h2>Manage Students Page</h2>;
-const BorrowRecords = () => <h2>Borrow Records Page</h2>;
+// Pages
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Books from './pages/Books';
+import StudentDashboard from './pages/StudentDashboard';
+import StudentProfile from './pages/StudentProfile';
+import LibrarianLogin from './pages/LibrarianLogin';
+import LibrarianDashboard from './pages/LibrarianDashboard';
+import ManageBooks from './pages/ManageBooks';
+import Students from './pages/Students';
+import BorrowRecords from './pages/BorrowRecords';
 
 const App = () => {
   const { loading, role } = useContext(AuthContext);
